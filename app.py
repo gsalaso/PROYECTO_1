@@ -30,14 +30,14 @@ if archivo is not None:
     # PARTE 2: Para filas con TIPO = NORMAL (usar HT y HP)
     df_normal = df[df['TIPO'] == 'NORMAL']
     for _, fila_normal in df_normal.iterrows():
-        cod_curso = fila_normal['COD CURS']
+        cod_curso = fila_normal['COD CURSO']
 
         for _ in range(fila_normal['HT']):
             fila_ht = fila_normal.copy()
             fila_ht['ORIGEN'] = 'NORMAL_HT'
             filas_repetidas.append(fila_ht)
 
-        fila_practica = df[(df['TIPO'] == 'PRACTICA') & (df['COD CURS'] == cod_curso)]
+        fila_practica = df[(df['TIPO'] == 'PRACTICA') & (df['COD CURSO'] == cod_curso)]
         if not fila_practica.empty:
             tipo_horario_practica = fila_practica.iloc[0]['TIPO HORARIO']
             for _ in range(fila_normal['HP']):
@@ -52,7 +52,7 @@ if archivo is not None:
     # Orden personalizado para columna TIPO
     orden_tipo = ['NORMAL', 'TEORIA', 'PRACTICA']
     df_repetido['TIPO'] = pd.Categorical(df_repetido['TIPO'], categories=orden_tipo, ordered=True)
-    df_repetido = df_repetido.sort_values(by=['COD CURS', 'TIPO'])
+    df_repetido = df_repetido.sort_values(by=['COD CURSO', 'TIPO'])
 
     st.success("Procesamiento completo. Revisa la tabla resultante:")
     st.dataframe(df_repetido)
